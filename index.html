@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eric Coste — Creator's Wall</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%23cfa45d' width='100' height='100'/><text x='50' y='65' font-family='Poppins, sans-serif' font-size='70' font-weight='700' fill='%23111' text-anchor='middle'>E</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XXXXXXXXXX', {
+            'page_path': window.location.pathname,
+            'anonymize_ip': true
+        });
+    </script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #fafafa;
+            color: #111;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Floating Background Elements */
+        .floating-bg {
+            position: fixed;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.03;
+        }
+
+        .float-1 {
+            width: 400px;
+            height: 400px;
+            background: #cfa45d;
+            border-radius: 50%;
+            top: -100px;
+            right: -100px;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .float-2 {
+            width: 300px;
+            height: 300px;
+            background: #111;
+            border-radius: 50%;
+            bottom: 10%;
+            left: -50px;
+            animation: float 10s ease-in-out infinite;
+            animation-delay: 2s;
+        }
+
+        .float-3 {
+            width: 250px;
+            height: 250px;
+            background: #cfa45d;
+            border-radius: 50%;
+            top: 50%;
+            right: 5%;
+            animation: float 12s ease-in-out infinite;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(30px);
+            }
+        }
+
+        /* Navigation Bar */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: #fff;
+            border-bottom: 1px solid #eee;
+            padding: 16px 20px;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            backdrop-filter: blur(10px);
+            background-color: rgba(255, 255, 255, 0.95);
+        }
+
+        .nav-brand {
+            font-size: 18px;
+            font-weight: 700;
+            color: #111;
+            text-decoration: none;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .nav-brand:hover {
+            color: #cfa45d;
+        }
+
+        .nav-back {
+            display: none;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #666;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-back:hover {
+            color: #cfa45d;
+        }
+
+        .nav-back.visible {
+            display: flex;
+        }
+
+        /* Main Container */
+        main {
+            margin-top: 60px;
+            min-height: 100vh;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 100px 20px 60px;
+            text-align: center;
+            background: linear-gradient(135deg, #fafafa 0%, #fff 100%);
+            position: relative;
+        }
+
+        .hero h1 {
+            font-size: 56px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            letter-spacing: -1px;
+            background: linear-gradient(135deg, #111 0%, #666 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: #666;
+            font-weight: 400;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Scroll Indicator */
+        .scroll-indicator {
+            text-align: center;
+            margin-top: 40px;
+            animation: bounce 2s infinite;
+        }
+
+        .scroll-indicator span {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            border: 2px solid #cfa45d;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(10px);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        /* Category Tiles Section */
+        .categories-section {
+            padding: 60px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 10;
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 28px;
+        }
+
+        .category-tile {
+            background-color: #fff;
+            border-radius: 12px;
+            padding: 40px 24px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            border: 2px solid transparent;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 320px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .category-tile::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(207, 164, 93, 0.05) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .category-tile:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+            border-color: #cfa45d;
+        }
+
+        .category-tile:hover::before {
+            opacity: 1;
+        }
+
+        .category-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .category-tile:hover .category-icon {
+            transform: scale(1.1);
+        }
+
+        .category-tile h2 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #111;
+            position: relative;
+            z-index: 1;
+        }
+
+        .category-tile p {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+            position: relative;
+            z-index: 1;
+            margin-bottom: 16px;
+            flex-grow: 1;
+        }
+
+        /* CTA Arrow */
+        .cta-arrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #cfa45d;
+            margin-top: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .category-tile:hover .cta-arrow {
+            gap: 10px;
+        }
+
+        .cta-arrow span {
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+
+        .category-tile:hover .cta-arrow span {
+            transform: translateX(4px);
+        }
+
+        /* Products Section */
+        .products-section {
+            display: none;
+            padding: 60px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 10;
+            animation: slideIn 0.5s ease;
+        }
+
+        .products-section.active {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-title {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #111;
+            background: linear-gradient(135deg, #111 0%, #666 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-subtitle {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 40px;
+            max-width: 600px;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 28px;
+        }
+
+        /* Product Card */
+        .product-card {
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #f0f0f0 0%, #e8e8e8 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            color: #999;
+            font-size: 13px;
+            text-align: center;
+            padding: 16px;
+            position: relative;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .product-content {
+            padding: 24px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #111;
+        }
+
+        .product-description {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.5;
+            flex-grow: 1;
+        }
+
+        .product-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #111;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-align: center;
+            border: 1px solid #111;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+        }
+
+        .product-button:hover,
+        .product-button:focus {
+            background-color: #cfa45d;
+            border-color: #cfa45d;
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        .product-button:focus {
+            outline: 2px solid #cfa45d;
+            outline-offset: 2px;
+        }
+
+        /* Footer */
+        footer {
+            padding: 60px 20px;
+            text-align: center;
+            background-color: #fff;
+            border-top: 1px solid #eee;
+            margin-top: 80px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .footer-links {
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: center;
+            gap: 28px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: #111;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover,
+        .footer-links a:focus {
+            color: #cfa45d;
+        }
+
+        .copyright {
+            font-size: 12px;
+            color: #999;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 36px;
+            }
+
+            .hero p {
+                font-size: 16px;
+            }
+
+            .categories-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .category-tile {
+                min-height: 260px;
+                padding: 32px 20px;
+            }
+
+            .category-tile h2 {
+                font-size: 24px;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .section-title {
+                font-size: 28px;
+            }
+
+            .footer-links {
+                gap: 16px;
+            }
+
+            .cta-arrow {
+                display: flex;
+            }
+        }
+
+        @media (max-width: 480px) {
+            nav {
+                padding: 12px 16px;
+            }
+
+            .nav-brand {
+                font-size: 16px;
+            }
+
+            main {
+                margin-top: 52px;
+            }
+
+            .hero {
+                padding: 60px 16px 40px;
+            }
+
+            .hero h1 {
+                font-size: 28px;
+            }
+
+            .hero p {
+                font-size: 14px;
+            }
+
+            .scroll-indicator {
+                margin-top: 30px;
+            }
+
+            .categories-section {
+                padding: 40px 16px;
+            }
+
+            .products-section {
+                padding: 40px 16px;
+            }
+
+            .category-tile {
+                min-height: 240px;
+                padding: 24px 16px;
+                border-radius: 8px;
+            }
+
+            .category-icon {
+                font-size: 36px;
+                margin-bottom: 12px;
+            }
+
+            .category-tile h2 {
+                font-size: 20px;
+            }
+
+            .category-tile p {
+                font-size: 12px;
+                margin-bottom: 12px;
+            }
+
+            .section-title {
+                font-size: 24px;
+            }
+
+            .product-button {
+                font-size: 12px;
+                padding: 9px 18px;
+            }
+
+            .cta-arrow {
+                font-size: 12px;
+                margin-top: 10px;
+            }
+
+            /* Hide floating elements on mobile for performance */
+            .float-1, .float-2, .float-3 {
+                display: none;
+            }
+        }
+
+        /* Accessibility */
+        button:focus,
+        a:focus {
+            outline: 2px solid #cfa45d;
+            outline-offset: 2px;
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Background Elements -->
+    <div class="floating-bg float-1"></div>
+    <div class="floating-bg float-2"></div>
+    <div class="floating-bg float-3"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <span class="nav-brand" onclick="goHome()" role="button" tabindex="0">Eric Coste</span>
+        <a href="#" class="nav-back" id="navBack" onclick="goHome(); return false;">
+            <span>←</span>
+            <span>Back</span>
+        </a>
+    </nav>
+
+    <main>
+        <!-- Home Section -->
+        <section id="homeSection" class="active">
+            <!-- Hero -->
+            <div class="hero">
+                <h1>Eric Coste</h1>
+                <p>Everything I create to help you grow, learn, and build wealth.</p>
+                <div class="scroll-indicator">
+                    <span></span>
+                </div>
+            </div>
+
+            <!-- Categories -->
+            <div class="categories-section">
+                <div class="categories-grid">
+                    <!-- Books -->
+                    <div class="category-tile" onclick="showCategory('books')" role="button" tabindex="0" onkeypress="if(event.key==='Enter') showCategory('books')">
+                        <span class="category-icon">📚</span>
+                        <h2>Books</h2>
+                        <p>Practical guides and masterclasses to transform your knowledge.</p>
+                        <div class="cta-arrow">
+                            <span>Explore</span>
+                            <span>→</span>
+                        </div>
+                    </div>
+
+                    <!-- SaaS -->
+                    <div class="category-tile" onclick="showCategory('saas')" role="button" tabindex="0" onkeypress="if(event.key==='Enter') showCategory('saas')">
+                        <span class="category-icon">⚙️</span>
+                        <h2>SaaS</h2>
+                        <p>Smart tools and platforms designed for your success.</p>
+                        <div class="cta-arrow">
+                            <span>Explore</span>
+                            <span>→</span>
+                        </div>
+                    </div>
+
+                    <!-- Courses -->
+                    <div class="category-tile" onclick="showCategory('courses')" role="button" tabindex="0" onkeypress="if(event.key==='Enter') showCategory('courses')">
+                        <span class="category-icon">🎓</span>
+                        <h2>Courses</h2>
+                        <p>Step-by-step training to master new skills and strategies.</p>
+                        <div class="cta-arrow">
+                            <span>Explore</span>
+                            <span>→</span>
+                        </div>
+                    </div>
+
+                    <!-- Tools -->
+                    <div class="category-tile" onclick="showCategory('tools')" role="button" tabindex="0" onkeypress="if(event.key==='Enter') showCategory('tools')">
+                        <span class="category-icon">🛠️</span>
+                        <h2>Tools</h2>
+                        <p>Resources and systems to automate and optimize your life.</p>
+                        <div class="cta-arrow">
+                            <span>Explore</span>
+                            <span>→</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Books Section -->
+        <section id="booksSection" class="products-section">
+            <h2 class="section-title">Books</h2>
+            <p class="section-subtitle">Practical guides and masterclasses to transform your knowledge.</p>
+            <div class="products-grid">
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='280' height='200'%3E%3Crect fill='%23f0e8df' width='280' height='200'/%3E%3Ctext x='50%25' y='50%25' font-family='Poppins' font-size='16' fill='%238b6f47' text-anchor='middle' dominant-baseline='middle' font-weight='600'%3EBEDROOM FUEL%3C/text%3E%3C/svg%3E" alt="Bedroom Fuel">
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-title">Bedroom Fuel</h3>
+                        <p class="product-description">Everyday foods that supercharge your stamina and vitality.</p>
+                        <a href="https://payhip.com/YOUR_PAYHIP_LINK" class="product-button" target="_blank" rel="noopener noreferrer">Get It Now</a>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='280' height='200'%3E%3Crect fill='%23f0e8df' width='280' height='200'/%3E%3Ctext x='50%25' y='50%25' font-family='Poppins' font-size='16' fill='%238b6f47' text-anchor='middle' dominant-baseline='middle' font-weight='600'%3ECommon Sense%3C/text%3E%3C/svg%3E" alt="Common Sense">
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-title">Common Sense</h3>
+                        <p class="product-description">Timeless wisdom for navigating modern challenges.</p>
+                        <a href="https://payhip.com/YOUR_PAYHIP_LINK" class="product-button" target="_blank" rel="noopener noreferrer">Get It Now</a>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='280' height='200'%3E%3Crect fill='%23f0e8df' width='280' height='200'/%3E%3Ctext x='50%25' y='50%25' font-family='Poppins' font-size='16' fill='%238b6f47' text-anchor='middle' dominant-baseline='middle' font-weight='600'%3EMore Books%3C/text%3E%3C/svg%3E" alt="More Books Coming">
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-title">Coming Soon</h3>
+                        <p class="product-description">New titles on the way to inspire and educate.</p>
+                        <a href="#" class="product-button" onclick="return false;">Notify Me</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SaaS Section -->
+        <section id="saasSection" class="products-section">
+            <h2 class="section-title">SaaS</h2>
+            <p class="section-subtitle">Smart tools and platforms designed for your success.</p>
+            <div class="products-grid">
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='280' height='200'%3E%3Crect fill='%23dff0f8' width='280' height='200'/%3E%3Ctext x='50%25' y='50%25' font-family='Poppins' font-size='16' fill='%231e5a8e' text-anchor='middle' dominant-baseline='middle' font-weight='600'%3EEMERSON%3C/text%3E%3C/svg%3E" alt="Emerson Business Support Systems">
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-title">Emerson Business Support Systems</h3>
+                        <p class="product-description">Smart bookkeeping and automation for seamless business operations.</p>
+                        <a href="https://payhip.com/YOUR_PAYHIP_LINK" class="product-button" target="_blank" rel="noopener noreferrer">Start Free Trial</a>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='280' height='200'%3E%3Crect fill='%23dff0f8' width='280' height='200'/%3E%3Ctext x='50%25' y='50%25' font-family='Poppins' font-size='16' fill='%231e5a8e' text-anchor='middle' dominant-baseline='middle' font-weight='600'%3ECREDITHOPPER%3C/text%3E%3C/svg%3E" alt="CreditHopper">
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-title">CreditHopper</h3>
+                        <p class="product-description">Rebuild credit and reclaim your financial power with proven strategies.</p>
+                        <a href="https://payhip.com/YOUR_PAYHIP_LINK" class="product-button" target="_blank" rel="noopener noreferrer">Start Free Trial</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Courses Section -->
+        <section id="coursesSection" class="products-section">
+            <h2 class="section-title">Courses</h2>
+            <p class="section-subtitle">Step-by-step training to master new skills and strategies.</p>
+            <div class="products-grid">
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='280' height='200'%3E%3Crect fill='%23f0e8f8' width='280' height='200'/%3E%3Ctext x='50%25' y='50%25' font-family='Poppins' font-size='16' fill='%235e2f8a' text-anchor='middle' dominant-baseline='middle' font-weight='600'%3EORIVAH%3C/text%3E%3C/svg%3E" alt="ORIVAH">
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-title">ORIVAH</h3>
+                        <p class="product-description">Activate your DNA and light codes for unlimited potential.</p>
+                        <a href="https://payhip.com/YOUR_PAYHIP_LINK" class="product-button" target="_blank" rel="noopener noreferrer">Enroll Now</a>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='280' height='200'%3E%3Crect fill='%23f0e8f8' width='280' height='200'/%3E%3Ctext x='50%25' y='50%25' font-family='Poppins' font-size='16' fill='%235e2f8a' text-anchor='middle' dominant-baseline='middle' font-weight='600'%3EMastery Course%3C/text%3E%3C/svg%3E" alt="Mastery Course">
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-title">Mastery Course</h3>
+                        <p class="product-description">Comprehensive training for personal and professional excellence.</p>
+                        <a href="https://payhip.com/YOUR_PAYHIP_LINK" class="product-button" target="_blank" rel="noopener noreferrer">Enroll Now</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tools Section -->
+        <section id="toolsSection" class="products-section">
+            <h2 class="section-title">Tools</h2>
+            <p class="section-subtitle">Resources and systems to automate and optimize your life.</p>
+            <div class="products-grid">
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='280' height='200'%3E%3Crect fill='%23e8f8f0' width='280' height='200'/%3E%3Ctext x='50%25' y='50%25' font-family='Poppins' font-size='16' fill='%231e6e5a' text-anchor='middle' dominant-baseline='middle' font-weight='600'%3EELIXEA%3C/text%3E%3C/svg%3E" alt="ELIXEA">
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-title">ELIXEA</h3>
+                        <p class="product-description">Luxury water. Purity redefined for optimal wellness.</p>
+                        <a href="https://payhip.com/YOUR_PAYHIP_LINK" class="product-button" target="_blank" rel="noopener noreferrer">Shop Now</a>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='280' height='200'%3E%3Crect fill='%23e8f8f0' width='280' height='200'/%3E%3Ctext x='50%25' y='50%25' font-family='Poppins' font-size='16' fill='%231e6e5a' text-anchor='middle' dominant-baseline='middle' font-weight='600'%3EOptimization Kit%3C/text%3E%3C/svg%3E" alt="Optimization Kit">
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-title">Optimization Kit</h3>
+                        <p class="product-description">Complete toolkit for maximizing productivity and results.</p>
+                        <a href="https://payhip.com/YOUR_PAYHIP_LINK" class="product-button" target="_blank" rel="noopener noreferrer">Get Access</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-links">
+            <a href="mailto:ericcoste9@gmail.com">Email</a>
+            <a href="https://tiktok.com/@EricCosteBooks" target="_blank" rel="noopener noreferrer">TikTok</a>
+            <a href="https://payhip.com/YOUR_PAYHIP_STORE" target="_blank" rel="noopener noreferrer">Payhip Store</a>
+        </div>
+        <p class="copyright">Copyright 2025 Eric Coste</p>
+    </footer>
+
+    <script>
+        function showCategory(category) {
+            // Google Analytics event tracking
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'category_click', {
+                    'category_name': category,
+                    'event_label': `Clicked ${category.charAt(0).toUpperCase() + category.slice(1)}`
+                });
+            }
+
+            // Hide all sections
+            document.getElementById('homeSection').classList.remove('active');
+            document.getElementById('booksSection').classList.remove('active');
+            document.getElementById('saasSection').classList.remove('active');
+            document.getElementById('coursesSection').classList.remove('active');
+            document.getElementById('toolsSection').classList.remove('active');
+
+            // Show selected section
+            const sectionId = category + 'Section';
+            document.getElementById(sectionId).classList.add('active');
+
+            // Update nav back button
+            document.getElementById('navBack').classList.add('visible');
+
+            // Scroll down to products section
+            const productsSection = document.getElementById(sectionId);
+            setTimeout(() => {
+                productsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100);
+        }
+
+        function goHome() {
+            // Google Analytics event tracking
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'back_to_home', {
+                    'event_label': 'Navigated back to home'
+                });
+            }
+
+            // Show home section
+            document.getElementById('homeSection').classList.add('active');
+            document.getElementById('booksSection').classList.remove('active');
+            document.getElementById('saasSection').classList.remove('active');
+            document.getElementById('coursesSection').classList.remove('active');
+            document.getElementById('toolsSection').classList.remove('active');
+
+            // Hide nav back button
+            document.getElementById('navBack').classList.remove('visible');
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Track outbound product clicks to Payhip
+        document.addEventListener('click', function(event) {
+            const link = event.target.closest('a[target="_blank"][href*="payhip"]');
+            if (link && typeof gtag !== 'undefined') {
+                const productName = link.closest('.product-card')?.querySelector('.product-title')?.textContent || 'Unknown Product';
+                gtag('event', 'product_click', {
+                    'product_name': productName,
+                    'destination_url': link.href,
+                    'event_label': `Clicked: ${productName}`
+                });
+            }
+        }, true);
+
+        // Keyboard navigation for home
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                const homeActive = document.getElementById('homeSection').classList.contains('active');
+                if (!homeActive) {
+                    goHome();
+                }
+            }
+        });
+
+        // Nav brand keyboard support
+        const navBrand = document.querySelector('.nav-brand');
+        navBrand.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                goHome();
+            }
+        });
+    </script>
+</body>
+</html>
